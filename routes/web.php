@@ -28,6 +28,8 @@ Route::group(['middleware' => ['auth']], function(){
 	Route::get('/perfil', 'UserController@perfil');
 	Route::resource('usuarios', 'UserController');
 
+	Route::resource('canhotos', 'CanhotoController');
+
 	Route::resource('perfis', 'PerfilController');
 
 	Route::get('/configuracoes', 'EmpresaController@configuracoes');

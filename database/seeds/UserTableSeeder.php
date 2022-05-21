@@ -23,7 +23,7 @@ class UserTableSeeder extends Seeder
                 'api_token' => Str::random(60),
                 'perfil_id' => '1',
                 'empresa_id' => '1',
-                'cpf ' => '01234567890',
+                'cpf' => '01234567890',
             )
         ));
     }
