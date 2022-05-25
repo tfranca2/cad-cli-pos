@@ -39,4 +39,5 @@ Route::group(['middleware' => ['auth']], function(){
 
 	Route::resource('distribuidores', 'DistribuidorController');
 
+	Route::resource('lista', 'ListaController');
 });
