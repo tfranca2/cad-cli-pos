@@ -12,15 +12,26 @@
 				<form action="{{ url('/lista') }}" method="post" enctype="multipart/form-data" class="form-edit" data-parsley-validate> 
 					@csrf
 					<div class="row">
-						<div class="col-md-10 p-lr-o">
+						<div class="col-md-3 p-lr-o">
+							<div class="form-group">
+								<label for="">Usuário</label>
+								<select class="form-control" name="user_id" required="">
+									<option value="">Selecione</option>
+									@foreach( $usuarios as $usuario )
+									<option value="{{ $usuario->id }}">{{ $usuario->name }}</option>
+									@endforeach
+								</select>
+							</div>
+						</div>
+						<div class="col-md-7 p-lr-o">
 							<div class="form-group">
 								<label for="">Enviar lista</label>
 								<input type="file" class="form-control" name="lista" accept=".txt" required="">
 							</div>
 						</div>
 						<div class="col-md-2 p-lr-o">
-							<div class="form-group">
-								<br><input type="submit" value="Enviar" class="btn btn-info pull-right">
+							<div class="form-group" style="padding-top: 5px;">
+								<br><input type="submit" value="Enviar" class="btn btn-success btn-block">
 							</div>
 						</div>
 					</div>

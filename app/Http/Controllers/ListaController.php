@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use App\Lista;
+use App\Perfil;
+use App\Helpers\Helper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Storage;
@@ -17,7 +20,14 @@ class ListaController extends Controller
      */
     public function index()
     {
-        return view('lista.upload');
+        foreach( Perfil::All() as $perfil ){
+            if( ! Helper::perfilTemPermissao($perfil->id, 'lista-gerenciar') ){
+                $perfil_id = $perfil->id;
+                break;
+            }
+        }
+        $usuarios = User::where('perfil_id', $perfil_id)->get();
+        return view( 'lista.upload', [ 'usuarios' => $usuarios ] );
     }
 
     /**
@@ -65,6 +75,7 @@ class ListaController extends Controller
                     'pasta' => $pasta,
                     'url' => $line,
                     'bilhete' => $bilhete,
+                    'user_id' => $request->user_id,
                 ]);
             }
         }

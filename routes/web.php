@@ -40,4 +40,7 @@ Route::group(['middleware' => ['auth']], function(){
 	Route::resource('distribuidores', 'DistribuidorController');
 
 	Route::resource('lista', 'ListaController');
+	
+	Route::get('cliente/{cpf_telefone}', 'ClienteController@get');
+	Route::resource('clientes', 'ClienteController');
 });
