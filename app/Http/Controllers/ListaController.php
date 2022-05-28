@@ -83,9 +83,20 @@ class ListaController extends Controller
         return response()->json([ 'message' => 'Cadastrado com sucesso', 'redirectURL' => url('/lista') ], 201 );
     }
 
-    public function progresso( Request $request, $id ){
+    public function progressoUsuario( Request $request, $id ){
         $total = lista::where('user_id', $id)->count();
         $feito = lista::where('user_id', $id)->where('cadastrado', 1)->count();
+        return response()->json([
+            'total' => $total,
+            'feito' => $feito,
+            'resto' => ( $total - $feito ),
+            'porcentagem' => ( ($total) ? ( ( $feito / $total ) * 100 ) : 0 ),
+        ], 200);
+    }
+
+    public function progresso( Request $request ){
+        $total = lista::All()->count();
+        $feito = lista::where('cadastrado', 1)->count();
         return response()->json([
             'total' => $total,
             'feito' => $feito,

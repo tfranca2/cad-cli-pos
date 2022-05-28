@@ -18,7 +18,12 @@
 								<select class="form-control" name="user_id" required="">
 									<option value="">Selecione</option>
 									@foreach( $usuarios as $usuario )
-									<option value="{{ $usuario->id }}">{{ $usuario->name }}</option>
+									@php
+										$s = '';
+										if( isset($_GET['user_id']) and $_GET['user_id'] and $_GET['user_id'] == $usuario->id )
+											$s = 'selected="selected"';
+									@endphp
+									<option value="{{ $usuario->id }}" {{$s}}>{{ $usuario->name }}</option>
 									@endforeach
 								</select>
 							</div>

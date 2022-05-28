@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use DB;
-use App\Distribuidor;
+use App\User;
+use App\Perfil;
 use App\Helpers\Helper;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -24,12 +26,19 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index(){
+    public function index()
+    {
 
-        $totalDistribuidores = Distribuidor::All()->count();
-
+        foreach( Perfil::All() as $perfil ){
+            if( ! Helper::perfilTemPermissao($perfil->id, 'lista-gerenciar') ){
+                $perfis[] = $perfil->id;
+            }
+        }
+        $usuarios = User::whereIn('perfil_id', [ $perfis ])->get();
+        $user = Auth::user();
         return view('home',[
-            'distribuidores' => $totalDistribuidores,
+            'usuarios' => $usuarios,
+            'user' => $user,
         ]);
 
     }

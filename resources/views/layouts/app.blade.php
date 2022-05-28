@@ -268,6 +268,8 @@
 
         <script src="{{asset('assets/js/custom.js')}}"></script>
 
+        @yield('script')
+        
     </body>
 </html>
 

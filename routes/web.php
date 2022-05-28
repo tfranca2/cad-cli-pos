@@ -39,9 +39,11 @@ Route::group(['middleware' => ['auth']], function(){
 
 	Route::resource('distribuidores', 'DistribuidorController');
 
+	Route::get('lista/progresso', 'ListaController@progresso');
 	Route::resource('lista', 'ListaController');
-	Route::get('usuario/{id}/progresso', 'ListaController@progresso');
+	Route::get('usuario/{id}/progresso', 'ListaController@progressoUsuario');
 	
 	Route::get('cliente/{cpf_telefone}', 'ClienteController@get');
 	Route::resource('clientes', 'ClienteController');
+	
 });

@@ -122,3 +122,7 @@ input[type="month"].form-control {
 	display: flex;
 	align-items: center;
 }
+
+.m-5 {
+	margin: 5px;
+}
