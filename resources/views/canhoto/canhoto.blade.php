@@ -142,8 +142,9 @@
                             <div class="col-sm-12 p-0">
                                 <div class="form-group">
                                     <label for="">Complemento</label>
-                                    <input type="text" class="form-control" id="complemento" name="complemento" placeholder="Complemento"
-                                        value="{{ (isset($user)?$user->name:'') }}" tabindex="5">
+                                    <input type="text" class="form-control" id="complemento" name="complemento"
+                                        placeholder="Complemento" value="{{ (isset($user)?$user->name:'') }}"
+                                        tabindex="5">
                                 </div>
                             </div>
                         </div>
@@ -204,9 +205,13 @@
 <script>
 $(document).ready(function() {
 
+    function scrollToBottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+    history.scrollRestoration = "manual";
+    window.onload = scrollToBottom;
+
     function preencheDados(id) {
-
-
         $.ajax({
             url: "{{url('cliente')}}" + "/" + id,
             success: function(data) {
@@ -221,15 +226,10 @@ $(document).ready(function() {
                 $("#complemento").val(data.complemento);
                 $("#cidade").val(data.cidade);
                 $("#estado").val(data.uf);
-                
-                $("#cliente_id").val(data.id);
 
-                
+                $("#cliente_id").val(data.id);
             }
         });
-
-
-
     }
 
     $("#cpf").blur(function() {
@@ -237,15 +237,15 @@ $(document).ready(function() {
             preencheDados($("#cpf").val());
         }
     });
-    
+
     $("#telefone").blur(function() {
         if ($("#telefone").val() != "" && $("#telefone").val() != null) {
             telefone = $("#telefone").val();
-            telefone = telefone.replace(/[^\d]+/g,'');
+            telefone = telefone.replace(/[^\d]+/g, '');
             preencheDados(telefone);
         }
     });
-    
+
 });
 </script>
 @endsection
