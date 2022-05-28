@@ -22,11 +22,10 @@ class ListaController extends Controller
     {
         foreach( Perfil::All() as $perfil ){
             if( ! Helper::perfilTemPermissao($perfil->id, 'lista-gerenciar') ){
-                $perfil_id = $perfil->id;
-                break;
+                $perfis[] = $perfil->id;
             }
         }
-        $usuarios = User::where('perfil_id', $perfil_id)->get();
+        $usuarios = User::whereIn('perfil_id', [ $perfis ])->get();
         return view( 'lista.upload', [ 'usuarios' => $usuarios ] );
     }
 
@@ -82,6 +81,17 @@ class ListaController extends Controller
         fclose($file);
 
         return response()->json([ 'message' => 'Cadastrado com sucesso', 'redirectURL' => url('/lista') ], 201 );
+    }
+
+    public function progresso( Request $request, $id ){
+        $total = lista::where('user_id', $id)->count();
+        $feito = lista::where('user_id', $id)->where('cadastrado', 1)->count();
+        return response()->json([
+            'total' => $total,
+            'feito' => $feito,
+            'resto' => ( $total - $feito ),
+            'porcentagem' => ( ($total) ? ( ( $feito / $total ) * 100 ) : 0 ),
+        ], 200);
     }
 
     /**
