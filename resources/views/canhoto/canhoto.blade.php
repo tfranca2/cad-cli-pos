@@ -208,7 +208,6 @@ $(document).ready(function() {
                         url: "{{url("
                         cliente ")}}" + "/" + $("#cpf").val(),
                         success: function(data) {
-
                             preencheDados( data );                     }
                     });
                 }
