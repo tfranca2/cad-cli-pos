@@ -30,8 +30,8 @@
                 <form action="{{ url('/clientes') }}" method="post" enctype="multipart/form-data" class="form-edit"
                     data-parsley-validate autocomplete="off">
                     @csrf
-                    <imput type="hidden" id="cliente_id" name="cliente_id">
-                    <imput type="hidden" name="canhoto_id" value="{{ $canhotoScan->id }}">
+                    <input type="hidden" id="cliente_id" name="cliente_id">
+                    <input type="hidden" name="canhoto_id" value="{{ $canhotoScan->id }}">
                     <br />
                     <div class="row">
 
