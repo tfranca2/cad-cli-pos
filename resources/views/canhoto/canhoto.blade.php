@@ -30,6 +30,8 @@
                 <form action="{{ url('/clientes') }}" method="post" enctype="multipart/form-data" class="form-edit"
                     data-parsley-validate autocomplete="off">
                     @csrf
+                    <imput type="hidden" id="cliente_id" name="cliente_id">
+                    <imput type="hidden" name="canhoto_id" value="{{ $canhotoScan->id }}">
                     <br />
                     <div class="row">
 
@@ -37,7 +39,7 @@
                             <div class="col-sm-12 p-0">
                                 <div class="form-group">
                                     <label for="">Telefone</label>
-                                    <input type="text" class="form-control" id="telefone" name="telefone"
+                                    <input type="text" class="form-control telefone" id="telefone" name="telefone"
                                         placeholder="(00) 0 0000-0000" value="{{ (isset($user)?$user->name:'') }}"
                                         maxlength="16" tabindex="1">
                                 </div>
@@ -140,7 +142,7 @@
                             <div class="col-sm-12 p-0">
                                 <div class="form-group">
                                     <label for="">Complemento</label>
-                                    <input type="text" class="form-control" name="complemento" placeholder="Complemento"
+                                    <input type="text" class="form-control" id="complemento" name="complemento" placeholder="Complemento"
                                         value="{{ (isset($user)?$user->name:'') }}" tabindex="5">
                                 </div>
                             </div>
@@ -196,22 +198,54 @@
     </div>
 </div>
 
+@endsection
+@section('script')
+
 <script>
-
 $(document).ready(function() {
-            function preencheDados( data ){
-                $("#nome").val(data.nome);
-            }
-            $("#cpf").blur(function() {
-                if ($("#cpf").val() != "" && $("#cpf").val() != null) {
-                    $.ajax({
-                        url: "{{url("
-                        cliente ")}}" + "/" + $("#cpf").val(),
-                        success: function(data) {
-                            preencheDados( data );                     }
-                    });
-                }
-            });
 
+    function preencheDados(id) {
+
+
+        $.ajax({
+            url: "{{url('cliente')}}" + "/" + id,
+            success: function(data) {
+                $("#telefone").val(data.telefone);
+                $("#cpf").val(data.cpf);
+                $("#cep").val(data.cep);
+                $("#nome").val(data.nome);
+                $("#email").val(data.email);
+                $("#endereco").val(data.endereco);
+                $("#numero").val(data.numero);
+                $("#bairro").val(data.bairro);
+                $("#complemento").val(data.complemento);
+                $("#cidade").val(data.cidade);
+                $("#estado").val(data.uf);
+                
+                $("#cliente_id").val(data.id);
+
+                
+            }
+        });
+
+
+
+    }
+
+    $("#cpf").blur(function() {
+        if ($("#cpf").val() != "" && $("#cpf").val() != null) {
+            preencheDados($("#cpf").val());
+        }
+    });
+    
+    $("#telefone").blur(function() {
+        if ($("#telefone").val() != "" && $("#telefone").val() != null) {
+            telefone = $("#telefone").val();
+            telefone = telefone.replace(/[^\d]+/g,'');
+            preencheDados(telefone);
+        }
+    });
+    
+});
 </script>
 @endsection
