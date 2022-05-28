@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Lista;
 
 class CanhotoController extends Controller
 {
@@ -23,7 +24,7 @@ class CanhotoController extends Controller
      */
     public function create()
     {
-        $imagemCanhoto = url('/assets/imgs/loading.gif');
+        $imagemCanhoto = Lista::getCanhoto();
 
         return view('canhoto.canhoto',[ 'canhotoScan' => $imagemCanhoto ]);
         //
