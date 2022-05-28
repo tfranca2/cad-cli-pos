@@ -30,7 +30,7 @@ class HomeController extends Controller
     {
 
         foreach( Perfil::All() as $perfil ){
-            if( ! Helper::perfilTemPermissao($perfil->id, 'lista-gerenciar') ){
+            if( ! Helper::perfilTemPermissao($perfil->id, 'lista_de_imagens-gerenciar') ){
                 $perfis[] = $perfil->id;
             }
         }

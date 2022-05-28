@@ -17,7 +17,7 @@
         </div>
     </div>
 
-    @if( Helper::temPermissao('lista-gerenciar') )
+    @if( Helper::temPermissao('lista_de_imagens-gerenciar') )
     <div class="row">
         <div class="col-md-12">
             <div class="panel short-states bg-5">
@@ -133,7 +133,7 @@
             });
         }
 
-        @if( Helper::temPermissao('lista-gerenciar') )
+        @if( Helper::temPermissao('lista_de_imagens-gerenciar') )
         progress();
         setInterval(function(){ progress() }, 5000);
         @foreach( $usuarios as $usuario )
