@@ -10,6 +10,13 @@
     max-width: 80%;
 }
 
+#canhoto_carrega {
+    background: url("{{url('assets/imgs/loading.gif')}}") no-repeat center;
+    background-size: contain;
+    min-height: 100px;
+    width: 100%;
+}
+
 .ui-content-body {
     margin-bottom: 0;
     padding-bottom: 0;
@@ -25,7 +32,9 @@
 
             <div class="panel-body">
 
-                <img src="{{ $canhotoScan->url }}" id="canhoto_atual">
+                <div id="canhoto_carrega">
+                    <img src="{{ $canhotoScan->url }}" id="canhoto_atual">
+                </div>
 
                 <form action="{{ url('/clientes') }}" method="post" enctype="multipart/form-data" class="form-edit"
                     data-parsley-validate autocomplete="off">
