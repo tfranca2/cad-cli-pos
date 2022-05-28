@@ -74,6 +74,57 @@ class ClienteController extends Controller
         return response()->json([], 404 );
     }
 
+    public function csv()
+    {
+        $headers = array(
+            "Content-type" => "text/csv",
+            "Content-Disposition" => "attachment; charset=UTF-8; filename=". date('YmdHis') ."_clientes.csv",
+            "Pragma" => "no-cache",
+            "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
+            "Expires" => "0"
+        );
+
+        $clientes = Cliente::All();
+
+        $callback = function() use ( $clientes ){
+            $file = fopen('php://output', 'w');
+            fputcsv($file, [ 
+                'cpf',
+                'nome',
+                'nascimento',
+                'email',
+                'telefone',
+                'cep',
+                'endereco',
+                'numero',
+                'bairro',
+                'complemento',
+                'cidade',
+                'uf',
+            ], ';', '"', "\n");
+
+            foreach( $clientes as $cliente ){
+                fputcsv( $file, [ 
+                    Helper::formatCpfCnpj( $cliente->cpf ), 
+                    utf8_decode( $cliente->nome ), 
+                    utf8_decode( $cliente->nascimento ), 
+                    utf8_decode( $cliente->email ), 
+                    utf8_decode( $cliente->telefone ), 
+                    utf8_decode( $cliente->cep ), 
+                    utf8_decode( $cliente->endereco ), 
+                    utf8_decode( $cliente->numero ), 
+                    utf8_decode( $cliente->bairro ), 
+                    utf8_decode( $cliente->complemento ), 
+                    utf8_decode( $cliente->cidade ), 
+                    utf8_decode( $cliente->uf ), 
+                ], ';', '"', "\n" );
+            }
+            fclose($file);
+        };
+
+        return \Response::stream( $callback, 200, $headers );
+    }
+
     /**
      * Display the specified resource.
      *

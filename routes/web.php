@@ -44,6 +44,7 @@ Route::group(['middleware' => ['auth']], function(){
 	Route::get('usuario/{id}/progresso', 'ListaController@progressoUsuario');
 	
 	Route::get('cliente/{cpf_telefone}', 'ClienteController@get');
+	Route::get('clientes/exportar', 'ClienteController@csv');
 	Route::resource('clientes', 'ClienteController');
 	
 });
