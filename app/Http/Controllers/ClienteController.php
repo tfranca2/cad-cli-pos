@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\Helper;
+use App\Lista;
 use App\Cliente;
+use App\Helpers\Helper;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
 
 class ClienteController extends Controller
@@ -37,16 +39,38 @@ class ClienteController extends Controller
      */
     public function store(Request $request)
     {
-         $validator = Validator::make($data, [
-            'name' => 'required|string',
-            'email' => 'nullable|email|unique:clientes,email',
-            'cpf' => 'required_without:telefone|string|unique:clientes,cpf',
-            'telefone' => 'required_without:cpf|string|unique:clientes,telefone',
+         $validator = Validator::make($request->all(), [
+            'cliente_id' => 'required|integer|exists:clientes,id',
+            'canhoto_id' => 'required|integer|exists:listas,id',
+            'nome' => 'required|string',
+
+            'cpf' => 'required_without:telefone|string|unique:clientes,cpf,'. $request->cliente_id,
+            'telefone' => 'required_without:cpf|string|unique:clientes,telefone,'. $request->cliente_id,
+            'email' => 'nullable|email|unique:clientes,email,'. $request->cliente_id,
+            
+            'nascimento' => 'nullable|string',
+            'cep' => 'nullable|string',
+            'endereco' => 'nullable|string',
+            'numero' => 'nullable|string',
+            'bairro' => 'nullable|string',
+            'complemento' => 'nullable|string',
+            'cidade' => 'nullable|string',
+            'uf' => 'nullable|string',
         ]);
 
         if ($validator->fails()) {
-            throw new ValidatorException(json_encode($validator->errors()->all()));
+            return response()->json([ 'error' => $validator->errors()->all() ], 400 );
         }
+
+        $campos = [];
+        $inputs = Input::except('id', '_method', '_token', 'cliente_id', 'canhoto_id');
+        foreach( $inputs as $key => $value ){
+            $campos[$key] = $value;
+        }
+        Cliente::find($request->cliente_id)->update($campos);
+        Lista::find($request->canhoto_id)->setCadastrado();
+
+        return response()->json([ 'message' => 'Cadastrado com sucesso', 'redirectURL' => url('/canhotos/create') ], 201 );
     }
 
     public function get(Request $request, $cpf_telefone)
