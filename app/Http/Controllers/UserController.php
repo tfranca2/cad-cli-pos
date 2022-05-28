@@ -189,10 +189,12 @@ class UserController extends Controller
 
         $inputs = Input::except('id', '_method', '_token', 'password', 'password_confirmation', 'ativo', 'imagem');
 
-        if( $request->has('ativo') )
-        	$user->deleted_at = null;
-        else 
-        	$user->deleted_at = date('Y-m-d H:i:s');
+        if( $id != Auth::user()->id ){
+            if( $request->has('ativo') )
+            	$user->deleted_at = null;
+            else 
+            	$user->deleted_at = date('Y-m-d H:i:s');
+        }
 
         foreach( $inputs as $key => $value ){
             $user->$key = $value;

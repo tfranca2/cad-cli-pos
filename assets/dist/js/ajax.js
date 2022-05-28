@@ -12,7 +12,9 @@ function atualizaCoordenadas(){
 		type: "GET",
 		url: url,
 		success: function(data){
+			if( data.results[0].geometry.location.lat )
 			$('#latitude').val( data.results[0].geometry.location.lat );
+			if( data.results[0].geometry.location.lng )
 			$('#longitude').val( data.results[0].geometry.location.lng );
 		}
 	});
@@ -34,9 +36,13 @@ $(document).on('blur', '#cep', function() {
 		
 		success: function( dados )
 		{
+			if( dados.logradouro )
 			$("#endereco").val(dados.logradouro);
+			if( dados.bairro )
 			$("#bairro").val(dados.bairro);
+			if( dados.uf )
 			$("#estado").val(dados.uf);
+			if( dados.localidade )
 			$("#cidade").val(dados.localidade);
 
 			atualizaCoordenadas();
