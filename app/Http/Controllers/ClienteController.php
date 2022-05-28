@@ -44,8 +44,8 @@ class ClienteController extends Controller
             'canhoto_id' => 'required|integer|exists:listas,id',
             'nome' => 'required|string',
 
-            'cpf' => 'required_without:telefone|string|unique:clientes,cpf,'. $request->cliente_id,
-            'telefone' => 'required_without:cpf|string|unique:clientes,telefone,'. $request->cliente_id,
+            'cpf' => 'required_without:telefone|nullable|string|unique:clientes,cpf,'. $request->cliente_id,
+            'telefone' => 'required_without:cpf|nullable|string|unique:clientes,telefone,'. $request->cliente_id,
             'email' => 'nullable|email|unique:clientes,email,'. $request->cliente_id,
             
             'nascimento' => 'nullable|string',
