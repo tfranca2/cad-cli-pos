@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Lista;
+use Session;
 
 class CanhotoController extends Controller
 {
@@ -25,6 +26,10 @@ class CanhotoController extends Controller
     public function create()
     {
         $imagemCanhoto = Lista::getCanhoto();
+        if( !$imagemCanhoto ){
+            Session::flash('message', 'Seus canhotos acabaram.');
+            return redirect()->route('home');
+        }
 
         return view('canhoto.canhoto',[ 'canhotoScan' => $imagemCanhoto ]);
         //
