@@ -68,7 +68,10 @@ class ClienteController extends Controller
             $cliente = $cliente->fresh();
         }
 
-        return $cliente;
+        if( $cliente )
+            return response()->json($cliente, 200 );
+
+        return response()->json([], 404 );
     }
 
     /**
