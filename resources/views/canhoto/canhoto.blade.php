@@ -1,201 +1,218 @@
 <?php use App\Helpers; ?>
 @extends('layouts.app')
 @section('content')
+
+<style>
+#canhoto_atual {
+    margin: auto;
+    display: block;
+    max-height: 350px;
+    max-width: 80%;
+}
+
+.ui-content-body {
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+</style>
+
 <div class="row">
-	<div class="col-md-12">
-		<div class="panel panel-card recent-activites">
-			<div class="panel-heading">
-				{{ ((isset($user))?'Editar':'Novo') }} canhoto
-			</div>
+    <div class="col-md-12">
+        <div class="panel panel-card recent-activites">
+            <div class="panel-heading">
+                {{ ((isset($user))?'Editar':'Novo') }} canhoto
+            </div>
 
-			<div class="panel-body">
+            <div class="panel-body">
 
-				<img src="{{ $canhotoScan->url }}">
+                <img src="{{ $canhotoScan->url }}" id="canhoto_atual">
 
-						<form action="{{ url('/clientes') }}" method="post" enctype="multipart/form-data" class="form-edit" data-parsley-validate> 
-					@csrf
-					<br/>
-					<div class="row">
+                <form action="{{ url('/clientes') }}" method="post" enctype="multipart/form-data" class="form-edit"
+                    data-parsley-validate autocomplete="off">
+                    @csrf
+                    <br />
+                    <div class="row">
 
-						<div class="col-md-2 p-lr-o">
+                        <div class="col-md-2 p-lr-o">
+                            <div class="col-sm-12 p-0">
+                                <div class="form-group">
+                                    <label for="">Telefone</label>
+                                    <input type="text" class="form-control" id="telefone" name="telefone"
+                                        placeholder="(00) 0 0000-0000" value="{{ (isset($user)?$user->name:'') }}"
+                                        maxlength="16" tabindex="1">
+                                </div>
+                            </div>
+                        </div>
 
-							<div class="col-sm-12 p-0">
-								<div class="form-group">
-									<label for="">Telefone</label>
-									<input type="text" class="form-control" name="telefone" placeholder="(00) 0000-0000" required="" value="{{ (isset($user)?$user->name:'') }}" >
-								</div>
-							</div>
-							
-						</div>
+                        <div class="col-md-2 p-lr-o">
 
-						<div class="col-md-6 p-lr-o">
-							
-							<div class="col-sm-12 p-0">
-								<div class="form-group">
-									<label for=""> - </label>
-									<input type="text" class="form-control" name="" placeholder=" - " required="" value="{{ (isset($user)?$user->name:'') }}" >
-								</div>
-							</div>
-						</div>
+                            <div class="col-sm-12 p-0">
+                                <div class="form-group">
+                                    <label for="">CPF</label>
+                                    <input type="text" class="form-control" id="cpf" name="cpf"
+                                        placeholder="000.000.000-00" value="{{ (isset($user)?$user->name:'') }}"
+                                        maxlength="14" data-parsley-cpf="true" tabindex="2">
+                                </div>
+                            </div>
 
-						<div class="col-md-4 p-lr-o">
-							
-							<div class="col-sm-12 p-0">
-								<div class="form-group">
-									<label for="">Título</label>
-									<input type="text" class="form-control" name="título" placeholder="00000" readonly="true" value="{{ $canhotoScan->bilhete }}" >
-								</div>
-							</div>
-						</div>
-					</div>
+                        </div>
 
-					<div class="row">
+                        <div class="col-md-6 p-lr-o">
 
-						<div class="col-md-2 p-lr-o">
+                            <div class="col-sm-12 p-0">
+                                <div class="form-group">
+                                    <label for="">Nome</label>
+                                    <input type="text" class="form-control" id="nome" name="nome" required=""
+                                        placeholder="Nome completo" value="{{ (isset($user)?$user->name:'') }}"
+                                        tabindex="-1">
+                                </div>
+                            </div>
+                        </div>
 
-							<div class="col-sm-12 p-0">
-								<div class="form-group">
-									<label for="">CPF</label>
-									<input type="text" class="form-control" id="cpf" name="CPF" placeholder="000.000.000-00" required="" value="{{ (isset($user)?$user->name:'') }}" >
-								</div>
-							</div>
-							
-						</div>
+                        <div class="col-md-2 p-lr-o">
 
-						<div class="col-md-10 p-lr-o">
-							
-							<div class="col-sm-12 p-0">
-								<div class="form-group">
-									<label for="">Nome</label>
-									<input type="text" class="form-control" id="nome" name="Nome" placeholder="Nome completo" required="" value="{{ (isset($user)?$user->name:'') }}" >
-								</div>
-							</div>
-						</div>
+                            <div class="col-sm-12 p-0">
+                                <div class="form-group">
+                                    <label for="">Título</label>
+                                    <input type="text" class="form-control" name="titulo" placeholder="00000"
+                                        readonly="true" value="{{ $canhotoScan->bilhete }}" tabindex="-1">
+                                </div>
+                            </div>
+                        </div>
 
-					</div>
+                    </div>
 
-					<div class="row">
+                    <div class="row">
 
-						<div class="col-md-2 p-lr-o">
+                        <div class="col-md-2 p-lr-o">
 
-							<div class="col-sm-12 p-0">
-								<div class="form-group">
-									<label for="">CEP</label>
-									<input type="text" class="form-control" id="cep" name="CEP" placeholder="00000-000" required="" value="{{ (isset($user)?$user->name:'') }}" >
-								</div>
-							</div>
-							
-						</div>
+                            <div class="col-sm-12 p-0">
+                                <div class="form-group">
+                                    <label for="">CEP</label>
+                                    <input type="text" class="form-control" id="cep" name="cep" placeholder="00.000-000"
+                                        value="{{ (isset($user)?$user->name:'') }}" maxlength="10" tabindex="3">
+                                </div>
+                            </div>
 
-						<div class="col-md-6 p-lr-o">
-							
-							<div class="col-sm-12 p-0">
-								<div class="form-group">
-									<label for="">Cidade</label>
-									<input type="text" class="form-control" id="cidade" name="Cidade" placeholder="Cidade" required="" value="{{ (isset($user)?$user->name:'') }}" >
-								</div>
-							</div>
-						</div>
+                        </div>
 
-						<div class="col-md-4 p-lr-o">
-							
-							<div class="col-sm-12 p-0">
-								<div class="form-group">
-									<label for="">Bairro</label>
-									<input type="text" class="form-control" id="bairro" name="Bairro" placeholder="Bairro" required="" value="{{ (isset($user)?$user->name:'') }}" >
-								</div>
-							</div>
-						</div>
-					</div>
+                        <div class="col-md-5 p-lr-o">
 
-					<div class="row">
+                            <div class="col-sm-12 p-0">
+                                <div class="form-group">
+                                    <label for="">Endereço</label>
+                                    <input type="text" class="form-control" id="endereco" name="endereco"
+                                        placeholder="(Ex.: Rua, Trav, Est, Av)"
+                                        value="{{ (isset($user)?$user->name:'') }}" tabindex="-1">
+                                </div>
+                            </div>
 
-						<div class="col-md-6 p-lr-o">
+                        </div>
 
-							<div class="col-sm-12 p-0">
-								<div class="form-group">
-									<label for="">Endereço</label>
-									<input type="text" class="form-control" id="endereco" name="endereco" placeholder="(Ex.: Rua, Trav, Est, Av)" required="" value="{{ (isset($user)?$user->name:'') }}" >
-								</div>
-							</div>
-							
-						</div>
+                        <div class="col-md-2 p-lr-o">
 
-						<div class="col-md-2 p-lr-o">
-							
-							<div class="col-sm-12 p-0">
-								<div class="form-group">
-									<label for="">Número</label>
-									<input type="text" class="form-control" id="numero" name="Número" placeholder="000" required="" value="{{ (isset($user)?$user->name:'') }}" >
-								</div>
-							</div>
-						</div>
+                            <div class="col-sm-12 p-0">
+                                <div class="form-group">
+                                    <label for="">Número</label>
+                                    <input type="text" class="form-control" id="numero" name="numero" placeholder="0000"
+                                        value="{{ (isset($user)?$user->name:'') }}" tabindex="4">
+                                </div>
+                            </div>
+                        </div>
 
-						<div class="col-md-4 p-lr-o">
-							
-							<div class="col-sm-12 p-0">
-								<div class="form-group">
-									<label for="">Complemento</label>
-									<input type="text" class="form-control" name="Complemento" placeholder="Complemento" required="" value="{{ (isset($user)?$user->name:'') }}" >
-								</div>
-							</div>
-						</div>
-					</div>
+                        <div class="col-md-3 p-lr-o">
 
-					<div class="row">
+                            <div class="col-sm-12 p-0">
+                                <div class="form-group">
+                                    <label for="">Bairro</label>
+                                    <input type="text" class="form-control" id="bairro" name="bairro"
+                                        placeholder="Bairro" value="{{ (isset($user)?$user->name:'') }}" tabindex="-1">
+                                </div>
+                            </div>
+                        </div>
 
-						<div class="col-md-4 p-lr-o">
+                    </div>
 
-							<div class="col-sm-12 p-0">
-								<div class="form-group">
-									<label for="">Email</label>
-									<input type="text" class="form-control" name="Email" placeholder="Email" required="" value="{{ (isset($user)?$user->name:'') }}" >
-								</div>
-							</div>
-							
-						</div>
+                    <div class="row">
 
-					</div>
+                        <div class="col-md-4 p-lr-o">
 
-					<div class="row">
-						
-							<div class="col-md-12 p-lr-o">
-						<div class="form-group">
-								<br><input type="submit" value="Salvar" class="btn btn-info pull-right">
-							</div>
-						</div>
+                            <div class="col-sm-12 p-0">
+                                <div class="form-group">
+                                    <label for="">Complemento</label>
+                                    <input type="text" class="form-control" name="complemento" placeholder="Complemento"
+                                        value="{{ (isset($user)?$user->name:'') }}" tabindex="5">
+                                </div>
+                            </div>
+                        </div>
 
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
+                        <div class="col-md-3 p-lr-o">
+
+                            <div class="col-sm-12 p-0">
+                                <div class="form-group">
+                                    <label for="">Cidade</label>
+                                    <input type="text" class="form-control" id="cidade" name="cidade"
+                                        placeholder="Cidade" value="{{ (isset($user)?$user->name:'') }}" tabindex="-1">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-1 p-lr-o">
+
+                            <div class="col-sm-12 p-0">
+                                <div class="form-group">
+                                    <label for="">UF</label>
+                                    <input type="text" class="form-control" id="estado" name="estado" placeholder="UF"
+                                        value="{{ (isset($user)?$user->name:'') }}" maxlength="2" tabindex="-1">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 p-lr-o">
+
+                            <div class="col-sm-12 p-0">
+                                <div class="form-group">
+                                    <label for="">Email</label>
+                                    <input type="text" class="form-control" id="email" name="email" placeholder="Email"
+                                        value="{{ (isset($user)?$user->name:'') }}" tabindex="6">
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-md-1 p-lr-o">
+                            <div class="form-group">
+                                <br><input type="submit" value="Salvar" class="btn btn-info pull-right" tabindex="7"
+                                    id="salvar_canhoto">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
-	$(document).ready(function(){
-		$("#cpf").blur( function() {
-			if($("#cpf").val() != "" && $("#cpf").val() != null ){
-				$.ajax({
-  				url: "{{url("cliente")}}" + "/" + $("#cpf").val(),
-   				success: function(data){
 
-				$("#nome").val( data.nome );
-   				}
-		 	});
-		}
-		//Colocar para Telefone		
-		$("#cpf").blur( function() {
-			if($("#cpf").val() != "" && $("#cpf").val() != null ){
-				$.ajax({
-  				url: "{{url("cliente")}}" + "/" + $("#cpf").val(),
-   				success: function(data){
+$(document).ready(function() {
+            function preencheDados( data ){
+                $("#nome").val(data.nome);
+            }
+            $("#cpf").blur(function() {
+                if ($("#cpf").val() != "" && $("#cpf").val() != null) {
+                    $.ajax({
+                        url: "{{url("
+                        cliente ")}}" + "/" + $("#cpf").val(),
+                        success: function(data) {
 
-				$("#nome").val( data.nome );
-   				}
-		 	});
-		}	
-	} );
-});
+                            preencheDados( data );                     }
+                    });
+                }
+            });
+
 </script>
 @endsection
