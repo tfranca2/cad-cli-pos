@@ -146,7 +146,7 @@
 
                     <div class="row">
 
-                        <div class="col-md-4 p-lr-o">
+                        <div class="col-md-6 p-lr-o">
 
                             <div class="col-sm-12 p-0">
                                 <div class="form-group">
@@ -158,7 +158,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-3 p-lr-o">
+                        <div class="col-md-5 p-lr-o">
 
                             <div class="col-sm-12 p-0">
                                 <div class="form-group">
@@ -180,26 +180,40 @@
                             </div>
                         </div>
 
-                        <div class="col-md-3 p-lr-o">
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-6 p-lr-o">
+
+                            <div class="col-sm-12 p-0">
+                                <div class="form-group">
+                                    <label for="">Vendedor</label>
+                                    <input type="text" class="form-control" id="vendedor" name="vendedor"
+                                        placeholder="Vendedor" value="{{ (isset($user)?$user->name:'') }}" tabindex="6">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-5 p-lr-o">
 
                             <div class="col-sm-12 p-0">
                                 <div class="form-group">
                                     <label for="">Email</label>
                                     <input type="text" class="form-control" id="email" name="email" placeholder="Email"
-                                        value="{{ (isset($user)?$user->name:'') }}" tabindex="6">
+                                        value="{{ (isset($user)?$user->name:'') }}" tabindex="7">
                                 </div>
                             </div>
 
                         </div>
+
                         <div class="col-md-1 p-lr-o">
                             <div class="form-group">
-                                <br><input type="submit" value="Salvar" class="btn btn-info pull-right" tabindex="7"
+                                <br><input type="submit" value="Salvar" class="btn btn-info pull-right" tabindex="8"
                                     id="salvar_canhoto">
                             </div>
                         </div>
-                    </div>
 
-                    <div class="row">
                     </div>
 
                 </form>
