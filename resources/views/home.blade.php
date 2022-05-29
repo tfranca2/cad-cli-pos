@@ -93,6 +93,10 @@
         padding-right: 15px;
     }
 
+    .progress-bar {
+        color: #000;
+    }
+
     #content {
         /*background: url('{{ url('/public/images/'. \Auth::user()->empresa()->main_logo ) }}') no-repeat 50% 40%;*/
     }

@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Session;
 use App\User;
+use Validator;
 use App\Perfil;
 use App\Empresa;
 use App\Cliente;
-use Session;
-use Validator;
-use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Hash;
-use App\Helpers\Helper;
 use App\Token_fcm;
+use App\Helpers\Helper;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Password;
 
 class UserController extends Controller

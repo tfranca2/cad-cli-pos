@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Lista extends Model
 {
     protected $table = 'listas';
-    protected $fillable = [ 'pasta', 'url', 'bilhete', 'cadastrado', 'user_id' ];
+    protected $fillable = [ 'pasta', 'url', 'bilhete', 'cadastrado', 'user_id', 'vendedor' ];
     protected $hidden = [ 'id', 'created_at', 'updated_at', 'deleted_at' ];
 
     public static function getCanhoto()
@@ -16,8 +16,8 @@ class Lista extends Model
         return self::inRandomOrder()->where('user_id', Auth::user()->id )->where('cadastrado', 0)->first();
     }
 
-    public function setCadastrado()
+    public function setCadastrado($vendedor)
     {
-        return $this->update([ 'cadastrado' => 1 ]);
+        return $this->update([ 'cadastrado' => 1, 'vendedor' => $vendedor ]);
     }
 }

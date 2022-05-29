@@ -6,7 +6,7 @@
 #canhoto_atual {
     margin: auto;
     display: block;
-    max-height: 350px;
+    max-height: 250px;
     max-width: 80%;
 }
 
@@ -21,19 +21,30 @@
     margin-bottom: 0;
     padding-bottom: 0;
 }
+
+#salvar_canhoto {
+    /*margin-top: 5px;*/
+}
+
+#salvar_canhoto:focus {
+    box-shadow: -1px -1px 10px #003a62 !important;
+}
+
+.form-group {
+    margin-bottom: 5px;
+}
+.form-group > label {
+    margin-bottom: 0;
+}
 </style>
 
 <div class="row">
     <div class="col-md-12">
         <div class="panel panel-card recent-activites">
-            <div class="panel-heading">
-                {{ ((isset($user))?'Editar':'Novo') }} canhoto
-            </div>
-
             <div class="panel-body">
 
                 <div id="canhoto_carrega">
-                    <img src="{{ $canhotoScan->url }}" id="canhoto_atual">
+                    <a href="{{ $canhotoScan->url }}" data-lightbox="canhoto"><img src="{{ $canhotoScan->url }}" id="canhoto_atual"></a>
                 </div>
 
                 <form action="{{ url('/clientes') }}" method="post" enctype="multipart/form-data" class="form-edit"
@@ -48,9 +59,7 @@
                             <div class="col-sm-12 p-0">
                                 <div class="form-group">
                                     <label for="">Telefone</label>
-                                    <input type="text" class="form-control telefone" id="telefone" name="telefone"
-                                        placeholder="(00) 0 0000-0000" value="{{ (isset($user)?$user->name:'') }}"
-                                        maxlength="16" tabindex="1">
+                                    <input type="text" class="form-control telefone" id="telefone" name="telefone" placeholder="(00) 0 0000-0000" value="{{ (isset($user)?$user->name:'') }}" maxlength="16" tabindex="1" required="">
                                 </div>
                             </div>
                         </div>
@@ -62,7 +71,7 @@
                                     <label for="">CPF</label>
                                     <input type="text" class="form-control" id="cpf" name="cpf"
                                         placeholder="000.000.000-00" value="{{ (isset($user)?$user->name:'') }}"
-                                        maxlength="14" data-parsley-cpf="true" tabindex="2">
+                                        maxlength="14" data-parsley-cpf="true" tabindex="2" required="">
                                 </div>
                             </div>
 
@@ -190,7 +199,7 @@
                                 <div class="form-group">
                                     <label for="">Vendedor</label>
                                     <input type="text" class="form-control" id="vendedor" name="vendedor"
-                                        placeholder="Vendedor" value="{{ (isset($user)?$user->name:'') }}" tabindex="6">
+                                        placeholder="Vendedor" value="{{ (isset($user)?$user->name:'') }}" tabindex="6" required="">
                                 </div>
                             </div>
                         </div>
@@ -235,24 +244,38 @@ $(document).ready(function() {
     window.onload = scrollToBottom;
 
     function preencheDados(id) {
+        if( id.replace(/[^\d]+/g, '') ){
         $.ajax({
             url: "{{url('cliente')}}" + "/" + id,
             success: function(data) {
-                $("#telefone").val(data.telefone);
-                $("#cpf").val(data.cpf);
-                $("#cep").val(data.cep);
-                $("#nome").val(data.nome);
-                $("#email").val(data.email);
-                $("#endereco").val(data.endereco);
-                $("#numero").val(data.numero);
-                $("#bairro").val(data.bairro);
-                $("#complemento").val(data.complemento);
-                $("#cidade").val(data.cidade);
-                $("#estado").val(data.uf);
+
+                if( data.telefone )
+                    $("#telefone").val(data.telefone);
+                if( data.cpf )
+                    $("#cpf").val(data.cpf);
+                if( data.cep )
+                    $("#cep").val(data.cep);
+                if( data.nome )
+                    $("#nome").val(data.nome);
+                if( data.email )
+                    $("#email").val(data.email);
+                if( data.endereco )
+                    $("#endereco").val(data.endereco);
+                if( data.numero )
+                    $("#numero").val(data.numero);
+                if( data.bairro )
+                    $("#bairro").val(data.bairro);
+                if( data.complemento )
+                    $("#complemento").val(data.complemento);
+                if( data.cidade )
+                    $("#cidade").val(data.cidade);
+                if( data.uf )
+                    $("#estado").val(data.uf);
 
                 $("#cliente_id").val(data.id);
             }
         });
+        }
     }
 
     $("#cpf").blur(function() {
@@ -263,10 +286,33 @@ $(document).ready(function() {
 
     $("#telefone").blur(function() {
         if ($("#telefone").val() != "" && $("#telefone").val() != null) {
-            telefone = $("#telefone").val();
-            telefone = telefone.replace(/[^\d]+/g, '');
+            telefone = $("#telefone").val().replace(/[^\d]+/g, '');
             preencheDados(telefone);
         }
+    });
+
+    // submete o formulario apertando 'Enter', quando o submit está em foco
+    $(".form-edit").on('keyup keypress', function(e) {
+        var keyCode = e.keyCode || e.which;
+        if( keyCode === 13 ){ 
+            $(".form-edit").submit();
+        }
+    });
+
+    $('#telefone').on('keyup keypress', function(e){
+        telefone = $('#telefone').val().replace(/[^\d]+/g, '');
+        if( telefone )
+            $('#cpf').removeAttr('required');
+        else
+            $('#cpf').attr('required', true);
+    });
+
+    $('#cpf').on('keyup keypress', function(e){
+        cpf = $('#cpf').val().replace(/[^\d]+/g, '');
+        if( cpf )
+            $('#telefone').removeAttr('required');
+        else
+            $('#telefone').attr('required', true);
     });
 
 });

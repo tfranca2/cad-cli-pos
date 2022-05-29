@@ -454,8 +454,8 @@ function validarCNPJ(cnpj) {
 
 window.ParsleyValidator.addValidator('cpf', function (value, requirement) {
     return validarCPF(value);
-}, 32).addMessage('en', 'cpf', 'CPF inválido.');
+}, 32).addMessage('pt-br', 'cpf', 'CPF inválido.');
 
 window.ParsleyValidator.addValidator('cnpj', function (value, requirement) {
     return validarCNPJ(value);
-}, 32).addMessage('en', 'cnpj', 'CNPJ inválido.');
+}, 32).addMessage('pt-br', 'cnpj', 'CNPJ inválido.');

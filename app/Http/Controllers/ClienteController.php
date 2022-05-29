@@ -43,6 +43,7 @@ class ClienteController extends Controller
             'cliente_id' => 'required|integer|exists:clientes,id',
             'canhoto_id' => 'required|integer|exists:listas,id',
             'nome' => 'required|string',
+            'vendedor' => 'required|string',
 
             'cpf' => 'required_without:telefone|nullable|string|unique:clientes,cpf,'. $request->cliente_id,
             'telefone' => 'required_without:cpf|nullable|string|unique:clientes,telefone,'. $request->cliente_id,
@@ -63,12 +64,12 @@ class ClienteController extends Controller
         }
 
         $campos = [];
-        $inputs = Input::except('id', '_method', '_token', 'cliente_id', 'canhoto_id');
+        $inputs = Input::except('id', '_method', '_token', 'cliente_id', 'canhoto_id', 'vendedor');
         foreach( $inputs as $key => $value ){
             $campos[$key] = $value;
         }
         Cliente::find($request->cliente_id)->update($campos);
-        Lista::find($request->canhoto_id)->setCadastrado();
+        Lista::find($request->canhoto_id)->setCadastrado($request->vendedor);
 
         return response()->json([ 'message' => 'Cadastrado com sucesso', 'redirectURL' => url('/canhotos/create') ], 201 );
     }
@@ -76,24 +77,26 @@ class ClienteController extends Controller
     public function get(Request $request, $cpf_telefone)
     {
         $cpf_telefone = Helper::onlyNumbers($cpf_telefone);
-        $cliente = Cliente::where('cpf', $cpf_telefone)->orWhere('telefone', $cpf_telefone)->first();
+        if( $cpf_telefone ) {
+            $cliente = Cliente::where('cpf', $cpf_telefone)->orWhere('telefone', $cpf_telefone)->first();
 
-        if( !$cliente and strlen($cpf_telefone) == 11 and env('CONSULTA_CPF', false) ){
-            $pessoa = \DB::connection('mysql2')->select("SELECT * FROM cadcpf WHERE CPF = '". $cpf_telefone ."'");
-            if( $pessoa ) $pessoa = $pessoa[0];
+            if( !$cliente and strlen($cpf_telefone) == 11 and env('CONSULTA_CPF', false) ){
+                $pessoa = \DB::connection('mysql2')->select("SELECT * FROM cadcpf WHERE CPF = '". $cpf_telefone ."'");
+                if( $pessoa ) $pessoa = $pessoa[0];
 
-            $cliente = Cliente::create([
-                'cpf' => $pessoa->CPF,
-                'nome' => $pessoa->nome,
-                'nascimento' => $pessoa->data_nascimento,
-                'email' => $pessoa->ds_email,
-                'telefone' => $pessoa->telefone_1,
-            ]);
-            $cliente = $cliente->fresh();
+                $cliente = Cliente::create([
+                    'cpf' => $pessoa->CPF,
+                    'nome' => $pessoa->nome,
+                    'nascimento' => $pessoa->data_nascimento,
+                    'email' => $pessoa->ds_email,
+                    'telefone' => $pessoa->telefone_1,
+                ]);
+                $cliente = $cliente->fresh();
+            }
+
+            if( $cliente )
+                return response()->json($cliente, 200 );
         }
-
-        if( $cliente )
-            return response()->json($cliente, 200 );
 
         return response()->json([], 404 );
     }
